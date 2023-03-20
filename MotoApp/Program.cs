@@ -4,7 +4,7 @@ using MotoApp.Entities;
 using MotoApp.Repositories;
 using MotoApp.Repositories.Extensions;
 
-var employeeRepository = new SqlRepository<Employee>(new MotoAppDbContext(), EmployeeAdded);
+var employeeRepository = new SqlRepository<Employee>(new MotoAppDbContext());
 employeeRepository.ItemAdded += employeeRepositoryOnItemAdded;
 
 void employeeRepositoryOnItemAdded(object? sender, Employee e)
@@ -16,23 +16,71 @@ AddEmployees(employeeRepository);
 AddManagers(employeeRepository);
 WriteToConsole(employeeRepository);
 
+bool exit = false;
+while (true)
+{
+    
+    Console.WriteLine("==========================================");
+    Console.WriteLine("Welcome in (description will do tomorrow) ");
+    Console.WriteLine("==========================================");
+    Console.WriteLine("Choose option (1/2/3");
+    Console.WriteLine("==========================================");
+    Console.WriteLine("1. Read all Employees");
+    Console.WriteLine("2. Add new employee");
+    Console.WriteLine("3. Remove employe");
+    Console.WriteLine("To finish click 'Q'");
+    Console.WriteLine("==========================================");
+    var option = Console.ReadLine();
 
+    switch (option)
+    {
+        case "1":
+            WriteToConsole(employeeRepository);
+            break;
+
+        case "2":
+            AddEmployees(employeeRepository);
+            break;
+
+        case "3":
+            break;
+
+        case "Q" or "q":
+            exit = true;
+            break;
+
+        default:
+            Console.WriteLine("Invalid operation\n");
+            break;
+
+    }
+}
 static void AddEmployees(IRepository<Employee> repository)
 {
+    Console.Write("Name: ");
+    var name = Console.ReadLine();
     var employees = new[]
     {
-        new Employee {FirstName = "Adam"},
-        new Employee {FirstName = "Piotr"},
-        new Employee {FirstName = "Zuza"}
+        new Employee {FirstName = name},
     };
 
     repository.AddBatch(employees);
 }
 
+static void RemoveEmployees(IRepository<Employee> repository)
+{
+    Console.Write("Name: ");
+    var name = Console.ReadLine();
+    var employees = new[]
+    {
+        new Employee {FirstName = name},
+    };
+
+    repository.RemoveBatch(employees);
+}
+
 static void AddManagers(IWriteRepository<Manager> managerRepository)
 {
-    managerRepository.Add(new Manager { FirstName = "Malwina" });
-    managerRepository.Add(new Manager { FirstName = "Magda" });
     managerRepository.Save();
 }
 

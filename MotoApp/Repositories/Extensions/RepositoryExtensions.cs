@@ -19,5 +19,16 @@ namespace MotoApp.Repositories.Extensions
 
             repository.Save();
         }
+
+        public static void RemoveBatch<T>(this IRepository<T> repository, T[] items)
+            where T : class, IEntity
+        {
+            foreach (var employee in items)
+            {
+                repository.Remove(employee);
+            }
+
+            repository.Save();
+        }
     }
 }
