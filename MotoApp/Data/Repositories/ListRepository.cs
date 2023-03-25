@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MotoApp.Entities;
+using MotoApp.Data.Entities;
 
-namespace MotoApp.Repositories
+namespace MotoApp.Data.Repositories
 {
     public class ListRepository<T> : IRepository<T>
         where T : class, IEntity, new()
@@ -13,10 +13,10 @@ namespace MotoApp.Repositories
         private readonly List<T> _items = new();
 
         public IEnumerable<T> GetAll()
-        { 
-            return _items.ToList(); 
+        {
+            return _items.ToList();
         }
-        
+
         public void Add(T item)
         {
             item.Id = _items.Count + 1;

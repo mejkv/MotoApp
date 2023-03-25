@@ -1,94 +1,116 @@
-﻿
-using MotoApp.Data;
-using MotoApp.Entities;
-using MotoApp.Repositories;
-using MotoApp.Repositories.Extensions;
+﻿using Microsoft.Extensions.DependencyInjection;
+using MotoApp;
+using MotoApp.Components.CsvReader;
+using MotoApp.Components.CsvReader.Models;
+using MotoApp.Components.DataProviders;
+using MotoApp.Data.Entities;
+using MotoApp.Data.Repositories;
 
-var employeeRepository = new SqlRepository<Employee>(new MotoAppDbContext());
-employeeRepository.ItemAdded += employeeRepositoryOnItemAdded;
 
-void employeeRepositoryOnItemAdded(object? sender, Employee e)
-{
-    Console.WriteLine($"Employee added => {e.FirstName} from {sender?.GetType().Name}");
-}
+var services = new ServiceCollection();
+services.AddSingleton<IApp, App>();
+//services.AddSingleton<IRepository<Employee>, ListRepository<Employee>>();
+//services.AddSingleton<IRepository<Car>, ListRepository<Car>>();
+//services.AddSingleton<ICarsProvider, CarsProvider>();
+services.AddSingleton<ICsvReader, CsvReader>();
 
-AddEmployees(employeeRepository);
-AddManagers(employeeRepository);
-WriteToConsole(employeeRepository);
+var serviceProvider = services.BuildServiceProvider();
+var app = serviceProvider.GetService<IApp>();
+app.Run();
 
-bool exit = false;
-while (true)
-{
-    
-    Console.WriteLine("==========================================");
-    Console.WriteLine("Welcome in (description will do tomorrow) ");
-    Console.WriteLine("==========================================");
-    Console.WriteLine("Choose option (1/2/3");
-    Console.WriteLine("==========================================");
-    Console.WriteLine("1. Read all Employees");
-    Console.WriteLine("2. Add new employee");
-    Console.WriteLine("3. Remove employe");
-    Console.WriteLine("To finish click 'Q'");
-    Console.WriteLine("==========================================");
-    var option = Console.ReadLine();
 
-    switch (option)
-    {
-        case "1":
-            WriteToConsole(employeeRepository);
-            break;
 
-        case "2":
-            AddEmployees(employeeRepository);
-            break;
 
-        case "3":
-            break;
+//using MotoApp.Data;
+//using MotoApp.Entities;
+//using MotoApp.Repositories;
+//using MotoApp.Repositories.Extensions;
 
-        case "Q" or "q":
-            exit = true;
-            break;
+//var employeeRepository = new SqlRepository<Employee>(new MotoAppDbContext());
+//employeeRepository.ItemAdded += employeeRepositoryOnItemAdded;
 
-        default:
-            Console.WriteLine("Invalid operation\n");
-            break;
+//void employeeRepositoryOnItemAdded(object? sender, Employee e)
+//{
+//    Console.WriteLine($"Employee added => {e.FirstName} from {sender?.GetType().Name}");
+//}
 
-    }
-}
-static void AddEmployees(IRepository<Employee> repository)
-{
-    Console.Write("Name: ");
-    var name = Console.ReadLine();
-    var employees = new[]
-    {
-        new Employee {FirstName = name},
-    };
+//AddEmployees(employeeRepository);
+//AddManagers(employeeRepository);
+//WriteToConsole(employeeRepository);
 
-    repository.AddBatch(employees);
-}
+//bool exit = false;
+//while (true)
+//{
 
-static void RemoveEmployees(IRepository<Employee> repository)
-{
-    Console.Write("Name: ");
-    var name = Console.ReadLine();
-    var employees = new[]
-    {
-        new Employee {FirstName = name},
-    };
+//    Console.WriteLine("==========================================");
+//    Console.WriteLine("Welcome in (description will do tomorrow) ");
+//    Console.WriteLine("==========================================");
+//    Console.WriteLine("Choose option (1/2/3");
+//    Console.WriteLine("==========================================");
+//    Console.WriteLine("1. Read all Employees");
+//    Console.WriteLine("2. Add new employee");
+//    Console.WriteLine("3. Remove employe");
+//    Console.WriteLine("To finish click 'Q'");
+//    Console.WriteLine("==========================================");
+//    var option = Console.ReadLine();
 
-    repository.RemoveBatch(employees);
-}
+//    switch (option)
+//    {
+//        case "1":
+//            WriteToConsole(employeeRepository);
+//            break;
 
-static void AddManagers(IWriteRepository<Manager> managerRepository)
-{
-    managerRepository.Save();
-}
+//        case "2":
+//            AddEmployees(employeeRepository);
+//            break;
 
-static void WriteToConsole(IReadRepository<IEntity> repository)
-{
-    var items = repository.GetAll();
-    foreach (var item in items)
-    {
-        Console.WriteLine(item);
-    }
-}
+//        case "3":
+//            break;
+
+//        case "Q" or "q":
+//            exit = true;
+//            break;
+
+//        default:
+//            Console.WriteLine("Invalid operation\n");
+//            break;
+
+//    }
+//}
+//static void AddEmployees(IRepository<Employee> repository)
+//{
+//    Console.Write("Name: ");
+//    var name = Console.ReadLine();
+//    var employees = new[]
+//    {
+//        new Employee {FirstName = name},
+//    };
+
+//    repository.AddBatch(employees);
+//}
+
+//static void RemoveEmployees(IRepository<Employee> repository)
+//{
+//    Console.Write("Name: ");
+//    var name = Console.ReadLine();
+//    var employees = new[]
+//    {
+//        new Employee {FirstName = name},
+//    };
+
+//    repository.RemoveBatch(employees);
+//}
+
+//static void AddManagers(IWriteRepository<Manager> managerRepository)
+//{
+//    managerRepository.Save();
+//}
+
+//static void WriteToConsole(IReadRepository<IEntity> repository)
+//{
+//    var items = repository.GetAll();
+//    foreach (var item in items)
+//    {
+//        Console.WriteLine(item);
+//    }
+//}

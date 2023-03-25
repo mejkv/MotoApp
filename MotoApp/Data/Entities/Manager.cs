@@ -1,5 +1,4 @@
-﻿
-namespace MotoApp.Entities
+﻿namespace MotoApp.Data.Entities
 {
     public class Manager : Employee
     {
