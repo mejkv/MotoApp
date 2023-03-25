@@ -1,4 +1,5 @@
 ﻿using MotoApp.Components.CsvReader;
+using System.Xml.Linq;
 
 namespace MotoApp
 {
@@ -14,13 +15,39 @@ namespace MotoApp
 
         public void Run() 
         {
-            Console.WriteLine("Im here");
-            Console.WriteLine("########");
-            Console.WriteLine("Skip and take");
+            CreateXml();
+            QuerryXml();
+        }
 
-            var cars = _csvReader.ProcessCars("Resources\\fuel.csv");
-            var manufactures = _csvReader.ProcessManufactures("Resources\\manufacturers.csv");
-            
+        private static void QuerryXml()
+        {
+            var document = XDocument.Load("fuel.xml");
+            var names = document
+                .Element("Cars")?
+                .Elements("Car")
+                .Where(x => x.Attribute("Manufacturer")?.Value == "BMW")
+                .Select(x => x.Attribute("Name")?.Value);
+
+            foreach (var name in names)
+            {
+                Console.WriteLine(name);
+            }
+        }
+
+        private void CreateXml()
+        {
+             var records = _csvReader.ProcessCars("Resources\\fuel.csv");
+
+            var document = new XDocument();
+            var cars = new XElement("Cars", records
+                .Select(x =>
+                new XElement("Car",
+                    new XAttribute("Name", x.Name),
+                    new XAttribute("Combined", x.Combined),
+                    new XAttribute("Manufacturer", x.Manufactured))));
+
+            document.Add(cars);
+            document.Save("fuel.xml");
         }
     }
 }
