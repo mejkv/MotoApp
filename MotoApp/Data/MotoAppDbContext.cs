@@ -1,18 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MotoApp.Data.Entities;
+using System.Threading.Channels;
 
 namespace MotoApp.Data
 {
-    internal class MotoAppDbContext : DbContext
+    public class MotoAppDbContext : DbContext
     {
-        public DbSet<Employee> Employees => Set<Employee>();
+        public MotoAppDbContext(DbContextOptions<MotoAppDbContext> options)
+            : base(options)
+        {
 
-        public DbSet<BusinessPartner> BusinessPartners => Set<BusinessPartner>();
+        }
+
+        public DbSet<Car> Cars { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseInMemoryDatabase(databaseName:"StorageAppDb");
-        }
+            => optionsBuilder.LogTo(Console.WriteLine);
     }
 }
+
+ 
+
+
+
