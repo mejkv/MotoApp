@@ -35,14 +35,14 @@ namespace MotoApp
                 Console.WriteLine("==========================================");
                 Console.WriteLine("Welcome in (description will do tomorrow) ");
                 Console.WriteLine("==========================================");
-                Console.WriteLine("Choose option (1/2/3");
+                Console.WriteLine("Choose option (1/2/3/4/5");
                 Console.WriteLine("==========================================");
                 Console.WriteLine("1. Insert data");
                 Console.WriteLine("2. Read all cars from database");
                 Console.WriteLine("3. Read grouped cars from database");
                 Console.WriteLine("4. Modify car name");
                 Console.WriteLine("5. Remove data");
-                Console.WriteLine("To finish click 'Q'");
+                Console.WriteLine("To finish type 'Q'");
                 Console.WriteLine("==========================================");
                 var option = Console.ReadLine();
 
