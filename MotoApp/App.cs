@@ -18,13 +18,7 @@ namespace MotoApp
 
         public void Run()
         {
-            
-            
-            
-
-            var cayman = this.ReadFirst("Cayman");
-            cayman.Name = "Mój samochód";
-            _motoAppDbContext.SaveChanges();
+            AppUI();
         }
 
         private Car? ReadFirst(string name)
