@@ -21,10 +21,6 @@ namespace MotoApp
             AppUI();
         }
 
-        private Car? ReadFirst(string name)
-        {
-            return _motoAppDbContext.Cars.FirstOrDefault(c => c.Name == name);
-        }
 
         private void AppUI()
         {
@@ -78,6 +74,11 @@ namespace MotoApp
 
                 }
             }
+        }
+
+        private Car? ReadFirst(string name)
+        {
+            return _motoAppDbContext.Cars.FirstOrDefault(c => c.Name == name);
         }
 
         private void ModifyCarNameFromDb()
